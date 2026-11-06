@@ -1,0 +1,3 @@
+- Identifier la couleur du jour EDF Tempo (Bleu, Blanc, Rouge)
+- Connaître le prix des heures creuses/pleines
+- Connaître la plage d'heures associées
