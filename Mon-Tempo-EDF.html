@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tempo EDF">
+    <title>Mon Tempo EDF — Bleu, Blanc, Rouge</title>
+
+    <!-- Icône SVG intégrée pour l'écran d'accueil Android -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%230f172a'/%3E%3Ccircle cx='30' cy='50' r='14' fill='%231e88e5'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23f8fafc'/%3E%3Ccircle cx='70' cy='50' r='14' fill='%23e53935'/%3E%3C/svg%3E">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Police Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #070b14;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Animations fluides style Android Material You */
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.45; }
+            50% { transform: scale(1.06); opacity: 0.7; }
+        }
+
+        .ambient-glow {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        .hero-transition {
+            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Thèmes de couleurs Tempo */
+        .theme-bleu {
+            background: linear-gradient(145deg, #1e88e5 0%, #1565c0 55%, #0d47a1 100%);
+            color: #ffffff;
+            box-shadow: 0 20px 45px -15px rgba(30, 136, 229, 0.55);
+            border: 1px solid rgba(144, 202, 249, 0.35);
+        }
+
+        .theme-blanc {
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
+            color: #0f172a;
+            box-shadow: 0 20px 45px -15px rgba(248, 250, 252, 0.28);
+            border: 1px solid #cbd5e1;
+        }
+
+        .theme-rouge {
+            background: linear-gradient(145deg, #ef4444 0%, #e53935 50%, #b71c1c 100%);
+            color: #ffffff;
+            box-shadow: 0 20px 45px -15px rgba(229, 57, 53, 0.6);
+            border: 1px solid rgba(252, 165, 165, 0.4);
+        }
+
+        .theme-inconnu {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            color: #f8fafc;
+            box-shadow: 0 20px 45px -15px rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        /* Effet pression bouton mobile */
+        .btn-press:active {
+            transform: scale(0.96);
+        }
+
+        /* Barre de défilement discrète */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.-bottom-12{bottom:-3rem}.-left-10{left:-2.5rem}.-right-10{right:-2.5rem}.-top-10{top:-2.5rem}.-top-24{top:-6rem}.bottom-6{bottom:1.5rem}.left-1\/2{left:50%}.z-10{z-index:10}.z-50{z-index:50}.my-1{margin-top:0.25rem;margin-bottom:0.25rem}.my-5{margin-top:1.25rem;margin-bottom:1.25rem}.mb-1{margin-bottom:0.25rem}.mb-2\.5{margin-bottom:0.625rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-1\.5{margin-top:0.375rem}.mt-2{margin-top:0.5rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-1{height:0.25rem}.h-1\.5{height:0.375rem}.h-10{height:2.5rem}.h-16{height:4rem}.h-2\.5{height:0.625rem}.h-3\.5{height:0.875rem}.h-36{height:9rem}.h-4{height:1rem}.h-40{height:10rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-8{height:2rem}.h-80{height:20rem}.h-9{height:2.25rem}.h-full{height:100%}.min-h-screen{min-height:100vh}.w-1\.5{width:0.375rem}.w-10{width:2.5rem}.w-16{width:4rem}.w-2\.5{width:0.625rem}.w-3\.5{width:0.875rem}.w-32{width:8rem}.w-36{width:9rem}.w-4{width:1rem}.w-40{width:10rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-8{width:2rem}.w-80{width:20rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0px}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.-translate-x-1\/2{--tw-translate-x:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-3{--tw-translate-y:0.75rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}@keyframes spin{to{transform:rotate(360deg)}}.animate-spin{animation:spin 1s linear infinite}.select-none{-webkit-user-select:none;user-select:none}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-start{justify-content:flex-start}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\.5{gap:0.125rem}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.space-y-2\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.625rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.625rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.rounded-l-full{border-top-left-radius:9999px;border-bottom-left-radius:9999px}.rounded-r-full{border-top-right-radius:9999px;border-bottom-right-radius:9999px}.rounded-t-3xl{border-top-left-radius:1.5rem;border-top-right-radius:1.5rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-\[\#1e88e5\]\/50{border-color:rgb(30 136 229 / 0.5)}.border-\[\#e53935\]\/50{border-color:rgb(229 57 53 / 0.5)}.border-amber-500\/30{border-color:rgb(245 158 11 / 0.3)}.border-blue-500\/25{border-color:rgb(59 130 246 / 0.25)}.border-emerald-500\/30{border-color:rgb(16 185 129 / 0.3)}.border-red-500\/30{border-color:rgb(239 68 68 / 0.3)}.border-slate-300\/25{border-color:rgb(203 213 225 / 0.25)}.border-slate-300\/40{border-color:rgb(203 213 225 / 0.4)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.border-slate-700\/70{border-color:rgb(51 65 85 / 0.7)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-slate-800\/80{border-color:rgb(30 41 59 / 0.8)}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.border-white\/15{border-color:rgb(255 255 255 / 0.15)}.border-slate-900\/15{border-color:rgb(15 23 42 / 0.15)}.bg-\[\#0b1120\]{--tw-bg-opacity:1;background-color:rgb(11 17 32 / var(--tw-bg-opacity, 1))}.bg-\[\#1e88e5\]{--tw-bg-opacity:1;background-color:rgb(30 136 229 / var(--tw-bg-opacity, 1))}.bg-\[\#1e88e5\]\/20{background-color:rgb(30 136 229 / 0.2)}.bg-\[\#e53935\]{--tw-bg-opacity:1;background-color:rgb(229 57 53 / var(--tw-bg-opacity, 1))}.bg-\[\#e53935\]\/20{background-color:rgb(229 57 53 / 0.2)}.bg-\[\#f8fafc\]{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-amber-300{--tw-bg-opacity:1;background-color:rgb(252 211 77 / var(--tw-bg-opacity, 1))}.bg-amber-400{--tw-bg-opacity:1;background-color:rgb(251 191 36 / var(--tw-bg-opacity, 1))}.bg-amber-500\/15{background-color:rgb(245 158 11 / 0.15)}.bg-black\/10{background-color:rgb(0 0 0 / 0.1)}.bg-black\/15{background-color:rgb(0 0 0 / 0.15)}.bg-black\/20{background-color:rgb(0 0 0 / 0.2)}.bg-black\/75{background-color:rgb(0 0 0 / 0.75)}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-sky-500{--tw-bg-opacity:1;background-color:rgb(14 165 233 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-100\/15{background-color:rgb(241 245 249 / 0.15)}.bg-slate-400{--tw-bg-opacity:1;background-color:rgb(148 163 184 / var(--tw-bg-opacity, 1))}.bg-slate-700\/80{background-color:rgb(51 65 85 / 0.8)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-800\/60{background-color:rgb(30 41 59 / 0.6)}.bg-slate-800\/80{background-color:rgb(30 41 59 / 0.8)}.bg-slate-800\/90{background-color:rgb(30 41 59 / 0.9)}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1))}.bg-slate-900\/60{background-color:rgb(15 23 42 / 0.6)}.bg-slate-900\/90{background-color:rgb(15 23 42 / 0.9)}.bg-slate-900\/95{background-color:rgb(15 23 42 / 0.95)}.bg-slate-950\/70{background-color:rgb(2 6 23 / 0.7)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.bg-white\/20{background-color:rgb(255 255 255 / 0.2)}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-slate-900\/10{background-color:rgb(15 23 42 / 0.1)}.bg-slate-900\/15{background-color:rgb(15 23 42 / 0.15)}.p-0{padding:0px}.p-3{padding:0.75rem}.p-3\.5{padding:0.875rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-0{padding-left:0px;padding-right:0px}.px-1\.5{padding-left:0.375rem;padding-right:0.375rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-3\.5{padding-left:0.875rem;padding-right:0.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.pb-2{padding-bottom:0.5rem}.pb-3{padding-bottom:0.75rem}.pb-6{padding-bottom:1.5rem}.pt-1{padding-top:0.25rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.capitalize{text-transform:capitalize}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36 / var(--tw-text-opacity, 1))}.text-blue-300{--tw-text-opacity:1;color:rgb(147 197 253 / var(--tw-text-opacity, 1))}.text-blue-400{--tw-text-opacity:1;color:rgb(96 165 250 / var(--tw-text-opacity, 1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113 / var(--tw-text-opacity, 1))}.text-sky-400{--tw-text-opacity:1;color:rgb(56 189 248 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-950{--tw-text-opacity:1;color:rgb(2 6 23 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-900{--tw-text-opacity:1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.opacity-0{opacity:0}.opacity-40{opacity:0.4}.opacity-75{opacity:0.75}.opacity-80{opacity:0.8}.opacity-95{opacity:0.95}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sky-500\/20{--tw-shadow-color:rgb(14 165 233 / 0.2);--tw-shadow:var(--tw-shadow-colored)}.ring-2{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.ring-white\/40{--tw-ring-color:rgb(255 255 255 / 0.4)}.blur-3xl{--tw-blur:blur(64px);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.blur-xl{--tw-blur:blur(24px);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.duration-500{transition-duration:500ms}.duration-700{transition-duration:700ms}.hover\:bg-\[\#1e88e5\]\/30:hover{background-color:rgb(30 136 229 / 0.3)}.hover\:bg-\[\#e53935\]\/30:hover{background-color:rgb(229 57 53 / 0.3)}.hover\:bg-sky-400:hover{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-100\/25:hover{background-color:rgb(241 245 249 / 0.25)}.hover\:bg-slate-700:hover{--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-700\/80:hover{background-color:rgb(51 65 85 / 0.8)}.hover\:text-sky-300:hover{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}@media (min-width: 640px){.sm\:min-h-0{min-height:0px}.sm\:items-center{align-items:center}.sm\:rounded-3xl{border-radius:1.5rem}.sm\:rounded-\[2\.5rem\]{border-radius:2.5rem}.sm\:border{border-width:1px}.sm\:border-slate-800\/90{border-color:rgb(30 41 59 / 0.9)}.sm\:p-4{padding:1rem}.sm\:px-4{padding-left:1rem;padding-right:1rem}.sm\:py-6{padding-top:1.5rem;padding-bottom:1.5rem}.sm\:text-4xl{font-size:2.25rem;line-height:2.5rem}.sm\:text-sm{font-size:0.875rem;line-height:1.25rem}.sm\:shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}}</style></head>
+<body class="min-h-screen flex flex-col items-center justify-start sm:py-6 px-0 sm:px-4 select-none">
+
+    <!-- Conteneur principal format smartphone Android Material You -->
+    <main class="w-full max-w-md bg-[#0b1120] sm:rounded-[2.5rem] sm:border sm:border-slate-800/90 sm:shadow-2xl min-h-screen sm:min-h-0 flex flex-col justify-between relative overflow-hidden">
+
+        <!-- Halo lumineux d'ambiance dynamique en arrière-plan -->
+        <div id="ambient-bg" class="ambient-glow pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full blur-3xl opacity-40 transition-colors duration-700 bg-slate-200"></div>
+
+        <!-- Barre d'état supérieure type Android -->
+        <div class="relative z-10 px-5 pt-4 pb-2 flex items-center justify-between text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+                <span id="live-clock" class="font-semibold text-slate-300 tracking-tight">10:34</span>
+                <span id="api-status-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                    <span id="api-status-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="api-status-text">API Tempo en direct</span>
+                </span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-400">
+                <!-- Icônes réseau/batterie décoratives style Android -->
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21L15.6 16.2C14.6 15.45 13.35 15 12 15C10.65 15 9.4 15.45 8.4 16.2L12 21ZM12 3C7.95 3 4.21 4.34 1.2 6.6L3 9C5.5 7.12 8.62 6 12 6C15.38 6 18.5 7.12 21 9L22.8 6.6C19.79 4.34 16.05 3 12 3ZM12 9C9.3 9 6.81 9.89 4.8 11.4L6.6 13.8C8.1 12.67 9.97 12 12 12C14.03 12 15.9 12.67 17.4 13.8L19.2 11.4C17.19 9.89 14.7 9 12 9Z"></path></svg>
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"></path></svg>
+            </div>
+        </div>
+
+        <!-- En-tête de l'application -->
+        <header class="relative z-10 px-5 pt-1 pb-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-slate-800/90 border border-slate-700/70 flex items-center justify-center shadow-inner">
+                    <div class="flex items-center gap-0.5">
+                        <span class="w-2.5 h-5 rounded-l-full bg-[#1e88e5]"></span>
+                        <span class="w-2.5 h-5 bg-[#f8fafc]"></span>
+                        <span class="w-2.5 h-5 rounded-r-full bg-[#e53935]"></span>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold tracking-tight text-white leading-tight">Mon Tempo EDF</h1>
+                    <p class="text-xs text-slate-400">Couleur du jour &amp; de demain</p>
+                </div>
+            </div>
+
+            <button id="refresh-btn" onclick="fetchTempoData(true)" title="Rafraîchir les données" class="btn-press w-10 h-10 rounded-2xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/60 flex items-center justify-center text-slate-200 transition">
+                <svg id="refresh-icon" class="w-5 h-5 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Bandeau Temps Réel : Heures Pleines / Heures Creuses -->
+        <section class="relative z-10 px-5 mb-4">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div id="slot-icon-box" class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                        <!-- Icône dynamique Soleil (HP) ou Lune (HC) -->
+                        <svg id="slot-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span id="slot-badge" class="text-xs font-bold uppercase tracking-wider text-amber-400">Heures Pleines</span>
+                            <span id="slot-hours" class="text-[11px] text-slate-400 font-medium">(06h - 22h)</span>
+                        </div>
+                        <p id="slot-countdown" class="text-xs text-slate-300 mt-0.5">Heures Creuses dans 11h 26m</p>
+                    </div>
+                </div>
+                <div class="text-right shrink-0">
+                    <span id="slot-percent-label" class="text-[11px] font-semibold text-slate-400 block mb-1">06h → 22h</span>
+                    <div class="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="slot-progress-bar" class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: 29%;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Corps principal -->
+        <div class="relative z-10 px-5 space-y-4 flex-1">
+
+            <!-- CARTE PRINCIPALE : AUJOURD'HUI -->
+            <section id="today-card" class="hero-transition theme-blanc rounded-3xl p-6 relative overflow-hidden">
+                <!-- Cercles décoratifs -->
+                <div class="pointer-events-none absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white/10 blur-xl"></div>
+                <div class="pointer-events-none absolute -left-10 -bottom-12 w-36 h-36 rounded-full bg-black/10 blur-xl"></div>
+
+                <div class="relative z-10">
+                    <!-- En-tête date d'aujourd'hui -->
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <div>
+                            <span id="today-eyebrow" class="text-[11px] font-extrabold uppercase tracking-widest opacity-80 block">AUJOURD'HUI</span>
+                            <h2 id="today-date" class="text-sm font-semibold capitalize opacity-95">vendredi 6 novembre 2026</h2>
+                        </div>
+                        <span id="today-pill-status" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-900/15 text-slate-900">Tarif intermédiaire</span>
+                    </div>
+
+                    <!-- Grand affichage central de la couleur -->
+                    <div class="my-5 flex items-center gap-4">
+                        <div id="today-big-icon" class="w-16 h-16 rounded-2xl bg-slate-900/10 flex items-center justify-center shrink-0 shadow-inner">
+                    <svg class="w-9 h-9 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                        <div>
+                            <div class="text-xs font-bold uppercase tracking-widest opacity-80">Couleur du jour</div>
+                            <div id="today-color-title" class="text-3xl sm:text-4xl font-black tracking-tight leading-none mt-1">JOUR BLANC</div>
+                        </div>
+                    </div>
+
+                    <!-- Conseil pratique -->
+                    <div id="today-advice-box" class="rounded-2xl bg-slate-900/10 p-3.5 mb-4 border border-slate-900/15">
+                        <p id="today-advice" class="text-xs sm:text-sm font-medium leading-relaxed">Tarif modéré en Heures Pleines (6h-22h). Privilégiez le lancement du lave-linge ou lave-vaisselle après 22h.</p>
+                    </div>
+
+                    <!-- Grille des tarifs indicatifs HC / HP -->
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div id="rate-hc-card" class="rounded-2xl bg-slate-900/10 p-3 border border-slate-900/15 transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-bold uppercase opacity-80">Heures Creuses</span>
+                                <span id="active-hc-tag" class="hidden text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-400 text-slate-950">Actuel</span>
+                            </div>
+                            <div class="mt-1 flex items-baseline gap-1">
+                                <span id="today-rate-hc" class="text-lg font-extrabold">0,1486 €</span>
+                                <span class="text-[11px] opacity-75">/ kWh</span>
+                            </div>
+                            <span class="text-[10px] opacity-75 block mt-0.5">22h00 à 06h00</span>
+                        </div>
+
+                        <div id="rate-hp-card" class="rounded-2xl bg-slate-900/10 p-3 border border-slate-900/15 transition-all ring-2 ring-white/40">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-bold uppercase opacity-80">Heures Pleines</span>
+                                <span id="active-hp-tag" class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-300 text-slate-950">Actuel</span>
+                            </div>
+                            <div class="mt-1 flex items-baseline gap-1">
+                                <span id="today-rate-hp" class="text-lg font-extrabold">0,1894 €</span>
+                                <span class="text-[11px] opacity-75">/ kWh</span>
+                            </div>
+                            <span class="text-[10px] opacity-75 block mt-0.5">06h00 à 22h00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARTE SECONDAIRE : DEMAIN -->
+            <section class="bg-slate-900/95 border border-slate-800 rounded-3xl p-4 shadow-lg">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">DEMAIN</span>
+                            <span id="tomorrow-date" class="text-xs text-slate-300 font-medium truncate capitalize">samedi 7 novembre 2026</span>
+                        </div>
+                        <p id="tomorrow-subtitle" class="text-xs text-slate-400 mt-1">HC : 0,1296 €/kWh • HP : 0,1609 €/kWh</p>
+                    </div>
+
+                    <!-- Badge couleur de demain -->
+                    <div id="tomorrow-badge" class="shrink-0 px-4 py-2.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center gap-2 shadow-md theme-bleu">
+                        <span id="tomorrow-dot" class="w-2.5 h-2.5 rounded-full bg-white"></span>
+                        <span id="tomorrow-color-text">JOUR BLEU</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMPTEUR SAISON TEMPO (1er sept. - 31 août) -->
+            <section class="bg-slate-900/90 border border-slate-800 rounded-3xl p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-300">Jours restants sur la saison</h3>
+                        <p id="season-period-label" class="text-[11px] text-slate-400">Saison 2026-2027</p>
+                    </div>
+                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-full border border-slate-700/60">
+                        365 jours
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2.5">
+                    <!-- Bleus -->
+                    <div class="bg-slate-950/70 border border-blue-500/25 rounded-2xl p-3">
+                        <div class="flex items-center gap-1.5 mb-1">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#1e88e5]"></span>
+                            <span class="text-xs font-bold text-blue-400">Bleus</span>
+                        </div>
+                        <div class="flex items-baseline gap-1 my-1">
+                            <span id="stats-bleu-restants" class="text-xl font-black text-white">234</span>
+                            <span id="stats-bleu-total" class="text-xs text-slate-400 font-semibold">/ 300</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1.5">
+                            <div id="bar-bleu" class="h-full bg-[#1e88e5] rounded-full transition-all duration-500" style="width: 78%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Blancs -->
+                    <div class="bg-slate-950/70 border border-slate-300/25 rounded-2xl p-3">
+                        <div class="flex items-center gap-1.5 mb-1">
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-100"></span>
+                            <span class="text-xs font-bold text-slate-200">Blancs</span>
+                        </div>
+                        <div class="flex items-baseline gap-1 my-1">
+                            <span id="stats-blanc-restants" class="text-xl font-black text-white">42</span>
+                            <span class="text-xs text-slate-400 font-semibold">/ 43</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1.5">
+                            <div id="bar-blanc" class="h-full bg-slate-100 rounded-full transition-all duration-500" style="width: 98%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Rouges -->
+                    <div class="bg-slate-950/70 border border-red-500/30 rounded-2xl p-3">
+                        <div class="flex items-center gap-1.5 mb-1">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#e53935]"></span>
+                            <span class="text-xs font-bold text-red-400">Rouges</span>
+                        </div>
+                        <div class="flex items-baseline gap-1 my-1">
+                            <span id="stats-rouge-restants" class="text-xl font-black text-white">22</span>
+                            <span class="text-xs text-slate-400 font-semibold">/ 22</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1.5">
+                            <div id="bar-rouge" class="h-full bg-[#e53935] rounded-full transition-all duration-500" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SIMULATEUR / MODE TEST INTERACTIF -->
+            <section class="bg-slate-900/60 border border-slate-800/80 rounded-3xl p-4">
+                <div class="flex items-center justify-between mb-2.5">
+                    <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                        Tester l'affichage des couleurs
+                    </span>
+                    <button onclick="fetchTempoData(true)" class="text-[11px] font-semibold text-sky-400 hover:text-sky-300 underline">
+                        Revenir au direct
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="simulateColor(1, 2)" class="btn-press py-2 px-3 rounded-xl bg-[#1e88e5]/20 hover:bg-[#1e88e5]/30 border border-[#1e88e5]/50 text-xs font-bold text-blue-300 flex items-center justify-center gap-1.5 transition">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#1e88e5]"></span>
+                        Jour Bleu
+                    </button>
+                    <button onclick="simulateColor(2, 3)" class="btn-press py-2 px-3 rounded-xl bg-slate-100/15 hover:bg-slate-100/25 border border-slate-300/40 text-xs font-bold text-slate-100 flex items-center justify-center gap-1.5 transition">
+                        <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+                        Jour Blanc
+                    </button>
+                    <button onclick="simulateColor(3, 1)" class="btn-press py-2 px-3 rounded-xl bg-[#e53935]/20 hover:bg-[#e53935]/30 border border-[#e53935]/50 text-xs font-bold text-red-300 flex items-center justify-center gap-1.5 transition">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#e53935]"></span>
+                        Jour Rouge
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Pied de page : Installation sur Android & Téléchargement -->
+        <footer class="relative z-10 px-5 pt-4 pb-6 mt-2 space-y-2.5">
+            <div class="grid grid-cols-2 gap-2.5">
+                <button onclick="downloadStandaloneApp()" class="btn-press w-full py-3 px-3.5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 transition">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>Télécharger (.html)</span>
+                </button>
+
+                <button onclick="toggleAndroidGuide(true)" class="btn-press w-full py-3 px-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition">
+                    <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Installer sur Android</span>
+                </button>
+            </div>
+
+            <!-- Barre d'accueil gestuelle Android -->
+            <div class="pt-2 flex justify-center">
+                <div class="w-32 h-1 rounded-full bg-slate-700/80"></div>
+            </div>
+        </footer>
+
+        <!-- Fenêtre modale : Guide d'installation sur Android -->
+        <div id="android-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+            <div class="w-full max-w-md bg-slate-900 border-t sm:border border-slate-700 rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-extrabold text-white">Mettre l'appli sur votre Android</h3>
+                    </div>
+                    <button onclick="toggleAndroidGuide(false)" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                        ✕
+                    </button>
+                </div>
+
+                <ol class="space-y-3 text-xs text-slate-300 leading-relaxed">
+                    <li class="flex gap-3 items-start bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                        <span class="w-6 h-6 rounded-full bg-sky-500 text-slate-950 font-black flex items-center justify-center shrink-0">1</span>
+                        <div>
+                            Cliquez sur <strong>« Télécharger (.html) »</strong> puis ouvrez le fichier téléchargé dans <strong>Google Chrome</strong> sur votre téléphone Android (ou hébergez-le).
+                        </div>
+                    </li>
+                    <li class="flex gap-3 items-start bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                        <span class="w-6 h-6 rounded-full bg-sky-500 text-slate-950 font-black flex items-center justify-center shrink-0">2</span>
+                        <div>
+                            Appuyez sur les <strong>3 petits points (⋮)</strong> en haut à droite de Chrome, puis choisissez <strong>« Ajouter à l'écran d'accueil »</strong>.
+                        </div>
+                    </li>
+                    <li class="flex gap-3 items-start bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                        <span class="w-6 h-6 rounded-full bg-emerald-400 text-slate-950 font-black flex items-center justify-center shrink-0">✓</span>
+                        <div>
+                            Vous avez maintenant une icône <strong>Mon Tempo EDF</strong> sur votre téléphone qui affiche en un clin d'œil si le jour est <strong>Bleu, Blanc ou Rouge</strong> !
+                        </div>
+                    </li>
+                </ol>
+
+                <button onclick="toggleAndroidGuide(false)" class="btn-press w-full py-3 rounded-2xl bg-sky-500 text-slate-950 font-extrabold text-xs">
+                    C'est compris !
+                </button>
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-3 transition-all duration-300 bg-slate-800 border border-slate-700 text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2">
+            <span id="toast-text">Données mises à jour</span>
+        </div>
+    </main>
+
+    <script>
+        /**
+         * Configuration des 3 couleurs Tempo EDF + état en attente (code 0)
+         * Tarifs TTC indicatifs Tempo EDF en vigueur
+         */
+        const TEMPO_CONFIG = {
+            1: {
+                code: 1,
+                label: 'JOUR BLEU',
+                shortLabel: 'BLEU',
+                themeClass: 'theme-bleu',
+                ambientColor: 'bg-blue-600',
+                dotColor: 'bg-white',
+                pillText: 'Tarif très avantageux',
+                adviceHP: 'Tarif très économique toute la journée. Vous pouvez utiliser votre chauffage et vos appareils sans restriction.',
+                adviceHC: 'Vous êtes en Heures Creuses d’un Jour Bleu : c’est le tarif le moins cher de toute l’année !',
+                rateHC: '0,1296 €',
+                rateHP: '0,1609 €',
+                iconSvg: `
+                    <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `
+            },
+            2: {
+                code: 2,
+                label: 'JOUR BLANC',
+                shortLabel: 'BLANC',
+                themeClass: 'theme-blanc',
+                ambientColor: 'bg-slate-200',
+                dotColor: 'bg-slate-900',
+                pillText: 'Tarif intermédiaire',
+                adviceHP: 'Tarif modéré en Heures Pleines (6h-22h). Privilégiez le lancement du lave-linge ou lave-vaisselle après 22h.',
+                adviceHC: 'Vous êtes en Heures Creuses d’un Jour Blanc : le tarif reste très avantageux jusqu’à 6h00.',
+                rateHC: '0,1486 €',
+                rateHP: '0,1894 €',
+                iconSvg: `
+                    <svg class="w-9 h-9 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `
+            },
+            3: {
+                code: 3,
+                label: 'JOUR ROUGE',
+                shortLabel: 'ROUGE',
+                themeClass: 'theme-rouge',
+                ambientColor: 'bg-red-600',
+                dotColor: 'bg-white',
+                pillText: 'Alerte tarif élevé !',
+                adviceHP: 'Attention : tarif très élevé de 6h à 22h ! Baissez le chauffage électrique et décalez tous vos gros appareils après 22h.',
+                adviceHC: 'Heures Creuses d’un Jour Rouge : le tarif redevient raisonnable jusqu’à 6h00 du matin.',
+                rateHC: '0,1568 €',
+                rateHP: '0,7562 €',
+                iconSvg: `
+                    <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                `
+            },
+            0: {
+                code: 0,
+                label: 'EN ATTENTE',
+                shortLabel: 'Annonce ~11h',
+                themeClass: 'theme-inconnu',
+                ambientColor: 'bg-slate-600',
+                dotColor: 'bg-slate-400',
+                pillText: 'Publication vers 11h00',
+                adviceHP: 'La couleur Tempo est publiée chaque matin vers 11h00 par EDF / RTE.',
+                adviceHC: 'La couleur Tempo est publiée chaque matin vers 11h00 par EDF / RTE.',
+                rateHC: '--,-- €',
+                rateHP: '--,-- €',
+                iconSvg: `
+                    <svg class="w-9 h-9 text-slate-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `
+            }
+        };
+
+        let currentTodayCode = 1;
+        let currentTomorrowCode = 0;
+
+        /**
+         * Formate une date en français lisible (ex: "Vendredi 6 novembre 2026")
+         */
+        function formatFrenchDate(dateObj) {
+            return new Intl.DateTimeFormat('fr-FR', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }).format(dateObj);
+        }
+
+        /**
+         * Met à jour l'horloge et l'indicateur Heures Pleines (6h-22h) / Heures Creuses (22h-6h)
+         */
+        function updateTimeAndSlot() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+
+            // Horloge barre d'état
+            const hh = String(hours).padStart(2, '0');
+            const mm = String(minutes).padStart(2, '0');
+            document.getElementById('live-clock').textContent = `${hh}:${mm}`;
+
+            // Dates Aujourd'hui et Demain
+            const tomorrow = new Date(now);
+            tomorrow.setDate(now.getDate() + 1);
+            document.getElementById('today-date').textContent = formatFrenchDate(now);
+            document.getElementById('tomorrow-date').textContent = formatFrenchDate(tomorrow);
+
+            // Détermination Heures Pleines (6h00 <= heure < 22h00) ou Heures Creuses
+            const isHeuresPleines = hours >= 6 && hours < 22;
+
+            const slotBadge = document.getElementById('slot-badge');
+            const slotHours = document.getElementById('slot-hours');
+            const slotCountdown = document.getElementById('slot-countdown');
+            const slotProgressBar = document.getElementById('slot-progress-bar');
+            const slotIconBox = document.getElementById('slot-icon-box');
+            const slotPercentLabel = document.getElementById('slot-percent-label');
+            const activeHcTag = document.getElementById('active-hc-tag');
+            const activeHpTag = document.getElementById('active-hp-tag');
+            const rateHcCard = document.getElementById('rate-hc-card');
+            const rateHpCard = document.getElementById('rate-hp-card');
+
+            if (isHeuresPleines) {
+                // Calcul du temps restant avant 22h00
+                const totalMinutesSince6 = (hours - 6) * 60 + minutes;
+                const totalSlotMinutes = 16 * 60; // 16 heures
+                const remainingMinutes = totalSlotMinutes - totalMinutesSince6;
+                const remH = Math.floor(remainingMinutes / 60);
+                const remM = remainingMinutes % 60;
+                const progress = Math.min(100, Math.max(4, Math.round((totalMinutesSince6 / totalSlotMinutes) * 100)));
+
+                slotBadge.textContent = 'Heures Pleines';
+                slotBadge.className = 'text-xs font-bold uppercase tracking-wider text-amber-400';
+                slotHours.textContent = '(06h - 22h)';
+                slotCountdown.textContent = `Heures Creuses dans ${remH}h ${String(remM).padStart(2, '0')}m`;
+                slotProgressBar.style.width = `${progress}%`;
+                slotProgressBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-500';
+                slotPercentLabel.textContent = '06h → 22h';
+                slotIconBox.className = 'w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0';
+
+                activeHpTag.classList.remove('hidden');
+                activeHcTag.classList.add('hidden');
+                rateHpCard.classList.add('ring-2', 'ring-white/40');
+                rateHcCard.classList.remove('ring-2', 'ring-white/40');
+            } else {
+                // Heures Creuses (22h00 -> 06h00)
+                let minutesSince22 = 0;
+                if (hours >= 22) {
+                    minutesSince22 = (hours - 22) * 60 + minutes;
+                } else {
+                    minutesSince22 = (2 * 60) + (hours * 60) + minutes;
+                }
+                const totalSlotMinutes = 8 * 60; // 8 heures
+                const remainingMinutes = totalSlotMinutes - minutesSince22;
+                const remH = Math.floor(remainingMinutes / 60);
+                const remM = remainingMinutes % 60;
+                const progress = Math.min(100, Math.max(4, Math.round((minutesSince22 / totalSlotMinutes) * 100)));
+
+                slotBadge.textContent = 'Heures Creuses';
+                slotBadge.className = 'text-xs font-bold uppercase tracking-wider text-emerald-400';
+                slotHours.textContent = '(22h - 06h)';
+                slotCountdown.textContent = `Heures Pleines dans ${remH}h ${String(remM).padStart(2, '0')}m`;
+                slotProgressBar.style.width = `${progress}%`;
+                slotProgressBar.className = 'h-full bg-emerald-400 rounded-full transition-all duration-500';
+                slotPercentLabel.textContent = '22h → 06h';
+                slotIconBox.className = 'w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0';
+
+                activeHcTag.classList.remove('hidden');
+                activeHpTag.classList.add('hidden');
+                rateHcCard.classList.add('ring-2', 'ring-white/40');
+                rateHpCard.classList.remove('ring-2', 'ring-white/40');
+            }
+
+            // Met à jour le conseil selon HP ou HC
+            const conf = TEMPO_CONFIG[currentTodayCode] || TEMPO_CONFIG[0];
+            document.getElementById('today-advice').textContent = isHeuresPleines ? conf.adviceHP : conf.adviceHC;
+        }
+
+        /**
+         * Applique visuellement la couleur d'aujourd'hui et de demain
+         */
+        function renderTempoColors(todayCode, tomorrowCode) {
+            currentTodayCode = [0, 1, 2, 3].includes(Number(todayCode)) ? Number(todayCode) : 0;
+            currentTomorrowCode = [0, 1, 2, 3].includes(Number(tomorrowCode)) ? Number(tomorrowCode) : 0;
+
+            const todayConf = TEMPO_CONFIG[currentTodayCode];
+            const tomorrowConf = TEMPO_CONFIG[currentTomorrowCode];
+
+            // Carte Aujourd'hui
+            const todayCard = document.getElementById('today-card');
+            todayCard.className = `hero-transition ${todayConf.themeClass} rounded-3xl p-6 relative overflow-hidden`;
+
+            // Halo d'ambiance
+            const ambientBg = document.getElementById('ambient-bg');
+            ambientBg.className = `ambient-glow pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full blur-3xl opacity-40 transition-colors duration-700 ${todayConf.ambientColor}`;
+
+            document.getElementById('today-color-title').textContent = todayConf.label;
+            document.getElementById('today-pill-status').textContent = todayConf.pillText;
+            document.getElementById('today-big-icon').innerHTML = todayConf.iconSvg;
+            document.getElementById('today-rate-hc').textContent = todayConf.rateHC;
+            document.getElementById('today-rate-hp').textContent = todayConf.rateHP;
+
+            // Ajustement contraste pour le Jour Blanc (texte foncé)
+            const adviceBox = document.getElementById('today-advice-box');
+            const rateHcCard = document.getElementById('rate-hc-card');
+            const rateHpCard = document.getElementById('rate-hp-card');
+            const pillStatus = document.getElementById('today-pill-status');
+            const bigIcon = document.getElementById('today-big-icon');
+
+            if (currentTodayCode === 2) {
+                adviceBox.className = 'rounded-2xl bg-slate-900/10 p-3.5 mb-4 border border-slate-900/15';
+                rateHcCard.className = 'rounded-2xl bg-slate-900/10 p-3 border border-slate-900/15 transition-all';
+                rateHpCard.className = 'rounded-2xl bg-slate-900/10 p-3 border border-slate-900/15 transition-all';
+                pillStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-slate-900/15 text-slate-900';
+                bigIcon.className = 'w-16 h-16 rounded-2xl bg-slate-900/10 flex items-center justify-center shrink-0 shadow-inner';
+            } else {
+                adviceBox.className = 'rounded-2xl bg-black/15 backdrop-blur-sm p-3.5 mb-4 border border-white/15';
+                rateHcCard.className = 'rounded-2xl bg-black/15 p-3 border border-white/10 transition-all';
+                rateHpCard.className = 'rounded-2xl bg-black/15 p-3 border border-white/10 transition-all';
+                pillStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-black/20 backdrop-blur-sm';
+                bigIcon.className = 'w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 shadow-lg';
+            }
+
+            // Carte Demain
+            const tomorrowBadge = document.getElementById('tomorrow-badge');
+            const tomorrowDot = document.getElementById('tomorrow-dot');
+            const tomorrowText = document.getElementById('tomorrow-color-text');
+            const tomorrowSubtitle = document.getElementById('tomorrow-subtitle');
+
+            tomorrowBadge.className = `shrink-0 px-4 py-2.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center gap-2 shadow-md ${tomorrowConf.themeClass}`;
+            tomorrowDot.className = `w-2.5 h-2.5 rounded-full ${tomorrowConf.dotColor}`;
+            tomorrowText.textContent = currentTomorrowCode === 0 ? 'Annonce ~11h' : `JOUR ${tomorrowConf.shortLabel}`;
+
+            if (currentTomorrowCode === 0) {
+                tomorrowSubtitle.textContent = 'En attente de publication (vers 11h00)';
+            } else {
+                tomorrowSubtitle.textContent = `HC : ${tomorrowConf.rateHC}/kWh • HP : ${tomorrowConf.rateHP}/kWh`;
+            }
+
+            updateTimeAndSlot();
+        }
+
+        /**
+         * Met à jour les compteurs de la saison Tempo
+         */
+        function renderStats(stats) {
+            const totalBleu = stats.bissextile ? 301 : 300;
+            const restantsBleu = stats.joursBleusRestants ?? 245;
+            const restantsBlanc = stats.joursBlancsRestants ?? 34;
+            const restantsRouge = stats.joursRougesRestants ?? 18;
+
+            document.getElementById('stats-bleu-restants').textContent = restantsBleu;
+            document.getElementById('stats-bleu-total').textContent = `/ ${totalBleu}`;
+            document.getElementById('stats-blanc-restants').textContent = restantsBlanc;
+            document.getElementById('stats-rouge-restants').textContent = restantsRouge;
+
+            document.getElementById('bar-bleu').style.width = `${Math.min(100, Math.round((restantsBleu / totalBleu) * 100))}%`;
+            document.getElementById('bar-blanc').style.width = `${Math.min(100, Math.round((restantsBlanc / 43) * 100))}%`;
+            document.getElementById('bar-rouge').style.width = `${Math.min(100, Math.round((restantsRouge / 22) * 100))}%`;
+
+            if (stats.periode) {
+                document.getElementById('season-period-label').textContent = `Saison ${stats.periode}`;
+            }
+        }
+
+        /**
+         * Récupère les données officielles en direct depuis api-couleur-tempo.fr
+         */
+        async function fetchTempoData(showNotification = false) {
+            const refreshIcon = document.getElementById('refresh-icon');
+            refreshIcon.classList.add('animate-spin');
+
+            try {
+                const [todayRes, tomorrowRes, statsRes] = await Promise.all([
+                    fetch('https://www.api-couleur-tempo.fr/api/jourTempo/today'),
+                    fetch('https://www.api-couleur-tempo.fr/api/jourTempo/tomorrow'),
+                    fetch('https://www.api-couleur-tempo.fr/api/stats')
+                ]);
+
+                if (!todayRes.ok || !tomorrowRes.ok) {
+                    throw new Error('Réponse API indisponible');
+                }
+
+                const todayData = await todayRes.json();
+                const tomorrowData = await tomorrowRes.json();
+                const statsData = statsRes.ok ? await statsRes.json() : {};
+
+                renderTempoColors(todayData.codeJour, tomorrowData.codeJour);
+                renderStats(statsData);
+
+                setConnectionBadge('direct');
+                if (showNotification) {
+                    showToast('Couleur Tempo mise à jour en direct');
+                }
+            } catch (error) {
+                // Mode de secours automatique si hors-ligne ou bloqué
+                renderTempoColors(1, 2);
+                renderStats({
+                    joursBleusRestants: 248,
+                    joursBlancsRestants: 35,
+                    joursRougesRestants: 19
+                });
+                setConnectionBadge('demo');
+                if (showNotification) {
+                    showToast('Mode démo actif (utilisez les boutons de test)');
+                }
+            } finally {
+                setTimeout(() => refreshIcon.classList.remove('animate-spin'), 400);
+            }
+        }
+
+        /**
+         * Permet à l'utilisateur de simuler un Jour Bleu, Blanc ou Rouge en 1 clic
+         */
+        function simulateColor(todayCode, tomorrowCode) {
+            renderTempoColors(todayCode, tomorrowCode);
+            setConnectionBadge('simu');
+            const label = TEMPO_CONFIG[todayCode].label;
+            showToast(`Aperçu : ${label}`);
+        }
+
+        /**
+         * Met à jour le badge d'état en haut à gauche
+         */
+        function setConnectionBadge(mode) {
+            const badge = document.getElementById('api-status-badge');
+            const dot = document.getElementById('api-status-dot');
+            const text = document.getElementById('api-status-text');
+
+            if (mode === 'direct') {
+                badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
+                dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse';
+                text.textContent = 'API Tempo en direct';
+            } else {
+                badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium bg-sky-500/15 text-sky-300 border border-sky-500/30';
+                dot.className = 'w-1.5 h-1.5 rounded-full bg-sky-400';
+                text.textContent = 'Aperçu interactif';
+            }
+        }
+
+        /**
+         * Affiche une notification discrète en bas de l'écran (remplace alert)
+         */
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').textContent = message;
+            toast.classList.remove('opacity-0', 'translate-y-3');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-3');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 2600);
+        }
+
+        /**
+         * Ouvre ou ferme le guide d'installation Android
+         */
+        function toggleAndroidGuide(show) {
+            const modal = document.getElementById('android-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Permet de télécharger l'application complète en un seul fichier .html pour Android
+         */
+        function downloadStandaloneApp() {
+            const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Mon-Tempo-EDF.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Fichier Mon-Tempo-EDF.html téléchargé !');
+        }
+
+        // Initialisation au chargement
+        window.onload = function () {
+            updateTimeAndSlot();
+            setInterval(updateTimeAndSlot, 30000);
+            fetchTempoData(false);
+        };
+    </script>
+
+</body></html>
